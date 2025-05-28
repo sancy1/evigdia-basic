@@ -1,0 +1,27 @@
+
+services:
+  - type: web
+    name: EvigDia
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn src.wsgi:application --workers 2 --threads 4 --timeout 120 --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: neon-connection
+          property: connectionString
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "evigdia-basic.onrender.com,localhost"  # Added localhost for safety
+      - key: RENDER_HEALTHCHECK_URL
+        value: "https://evigdia-basic.onrender.com/api/user/health/"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://evigdia-basic.onrender.com"
+      - key: PYTHONPATH
+        value: "/opt/render/project/src"  # Critical for module resolution
+    healthCheckPath: /api/user/health/
+    autoDeploy: true
+    plan: free
