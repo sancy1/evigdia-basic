@@ -76,7 +76,7 @@ MIDDLEWARE = [
     
     'allauth.account.middleware.AccountMiddleware',
     
-    'user_account.middleware.NeonKeepAliveMiddleware',
+    'user_account.middleware.middleware.NeonKeepAliveMiddleware',
     'user_account.middleware.ping_render.RenderKeepAlive',
 
 ]
