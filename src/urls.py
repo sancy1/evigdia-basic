@@ -17,11 +17,11 @@ from django.urls import path, include
 
 schema_view = swagger_get_schema_view(
     openapi.Info(
-        title='FusionPex API',
+        title='EvigDia Basic API',
         default_version='1.0.0',
         description='API documentation of FussionPex',
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@fusionpex.com"),
+        contact=openapi.Contact(email="contact@evigdiabasic.com"),
         license=openapi.License(name="BSD License"),
     ),
     public=True,
