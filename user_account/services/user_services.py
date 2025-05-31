@@ -73,22 +73,48 @@ class UserService:
             raise RegistrationError(f"An unexpected error occurred during registration: {e}")
 
 
+    # @staticmethod
+    # def verify_email(token):
+    #     """Verifies the user's email using the verification token."""
+    #     try:
+    #         user = User.objects.get(verification_token=token, verification_token_expires__gt=timezone.now())
+    #         if not user.is_verified:
+    #             user.is_verified = True
+    #             user.verification_token = None
+    #             user.verification_token_expires = None
+    #             user.save()
+    #         return user
+    #     except User.DoesNotExist:
+    #         raise ValueError("Invalid or expired verification token.")
+    #     except Exception as e:
+    #         logger.error(f"Error verifying email: {e}")
+    #         raise ValueError("An error occurred during email verification.")
+    
+    
     @staticmethod
     def verify_email(token):
-        """Verifies the user's email using the verification token."""
         try:
-            user = User.objects.get(verification_token=token, verification_token_expires__gt=timezone.now())
-            if not user.is_verified:
-                user.is_verified = True
-                user.verification_token = None
-                user.verification_token_expires = None
-                user.save()
+            user = User.objects.get(
+                verification_token=token,
+                verification_token_expires__gt=timezone.now()
+            )
+            
+            # Check if already verified to prevent multiple verifications
+            if user.is_verified:
+                return user
+                
+            user.is_verified = True
+            user.verification_token = None  # Clear the token
+            user.verification_token_expires = None
+            user.save()
+            
             return user
+            
         except User.DoesNotExist:
-            raise ValueError("Invalid or expired verification token.")
+            raise ValueError("Invalid or expired verification token")
         except Exception as e:
-            logger.error(f"Error verifying email: {e}")
-            raise ValueError("An error occurred during email verification.")
+            logger.error(f"Error verifying email: {str(e)}")
+            raise ValueError("An error occurred during email verification")
 
 
 
