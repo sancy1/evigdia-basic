@@ -10,7 +10,8 @@ class EmailService:
     @staticmethod
     def send_verification_email(user):
         try:
-            verification_url = f"{settings.FRONTEND_URL}/api/user/verify-email?token={user.verification_token}"
+            # verification_url = f"{settings.FRONTEND_URL}/api/user/verify-email?token={user.verification_token}"
+            verification_url = f"{settings.FRONTEND_URL}/auth/verify-email?token={user.verification_token}"
             
             headers = {
                 "accept": "application/json",
