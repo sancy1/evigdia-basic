@@ -22,7 +22,8 @@ class ResetPasswordService:
             user.save()
 
             # Build reset URL
-            reset_url = f"{settings.FRONTEND_URL}/api/user/reset-password?token={user.reset_password_token}&userId={user.id}"
+            # reset_url = f"{settings.FRONTEND_URL}/api/user/reset-password?token={user.reset_password_token}&userId={user.id}"
+            reset_url = f"{settings.FRONTEND_URL}/auth/reset-password?token={user.reset_password_token}&userId={user.id}"
 
             # Prepare email content
             email_data = {
