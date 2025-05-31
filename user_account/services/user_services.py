@@ -72,6 +72,7 @@ class UserService:
             logger.error(f"Error registering user: {str(e)}")
             raise RegistrationError(f"An unexpected error occurred during registration: {e}")
 
+
     @staticmethod
     def verify_email(token):
         """Verifies the user's email using the verification token."""
@@ -89,74 +90,29 @@ class UserService:
             logger.error(f"Error verifying email: {e}")
             raise ValueError("An error occurred during email verification.")
 
-# class UserService:
-#     @staticmethod
-#     def register_user(username, email, password, role=None):
-#         if role == '':
-#             role = None
-#         try:
-#             # Check if user already exists
-#             if User.objects.filter(email=email).exists():
-#                 raise ValueError("A user with this email already exists")
-
-#             if User.objects.filter(username=username).exists():
-#                 raise ValueError("A user with this username already exists")
-
-#             # Create the user
-#             user = User.objects.create_user(
-#                 username=username,
-#                 email=email,
-#                 password=password,
-#                 role=role,
-#                 is_verified=False,
-#                 verification_token=uuid.uuid4().hex,
-#                 verification_token_expires=timezone.now() + timedelta(hours=24)
-#             )
-
-#             # Create or get profile
-#             profile, created = Profile.objects.get_or_create(user=user)
-#             if created:
-#                 logger.info(f"Profile created for new user: {user.email}")
-#                 # Optionally set default profile values here, similar to your adapter
-#                 profile.headline = f"{user.first_name}'s Profile" if user.first_name else "New User Profile"
-#                 profile.show_email = False
-#                 profile.show_phone = False
-#                 profile.show_location = True
-#                 profile.save()
-
-#             # Send verification email
-#             if not EmailService.send_verification_email(user):
-#                 logger.error("Failed to send verification email")
-
-#             return user
-
-#         except Exception as e:
-#             logger.error(f"Error registering user: {str(e)}")
-#             raise
 
 
-    
-    # Verify ZEmail --------------------------------------------------------------------------------
-    @staticmethod
-    def verify_email(token):
-        try:
-            user = User.objects.get(
-                verification_token=token,
-                verification_token_expires__gt=timezone.now()
-            )
+    # Verify Email --------------------------------------------------------------------------------
+    # @staticmethod
+    # def verify_email(token):
+    #     try:
+    #         user = User.objects.get(
+    #             verification_token=token,
+    #             verification_token_expires__gt=timezone.now()
+    #         )
             
-            user.is_verified = True
-            user.verification_token = None
-            user.verification_token_expires = None
-            user.save()
+    #         user.is_verified = True
+    #         user.verification_token = None
+    #         user.verification_token_expires = None
+    #         user.save()
             
-            return user
+    #         return user
             
-        except User.DoesNotExist:
-            raise ValueError("Invalid or expired verification token")
-        except Exception as e:
-            logger.error(f"Error verifying email: {str(e)}")
-            raise
+    #     except User.DoesNotExist:
+    #         raise ValueError("Invalid or expired verification token")
+    #     except Exception as e:
+    #         logger.error(f"Error verifying email: {str(e)}")
+    #         raise
         
         
         
