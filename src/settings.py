@@ -1118,7 +1118,8 @@ if not DEBUG:
     CORS_PREFLIGHT_MAX_AGE = 86400  # 1 day
     # It's better to make CORS_URLS_REGEX more specific if possible,
     # or ensure it matches all your API endpoints.
-    CORS_URLS_REGEX = r'^/api/.*$'
+    # CORS_URLS_REGEX = r'^/api/.*$'
+    CORS_URLS_REGEX = r'^(/(api|auth)/.*)$'
     CSRF_TRUSTED_ORIGINS = [f"https://{urlparse(o).netloc}" for o in CORS_ALLOWED_ORIGINS if urlparse(o).scheme == 'https']
 
 
